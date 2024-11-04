@@ -6,7 +6,7 @@
 module load CUDA
 module load Python/3.9.6-GCCcore-11.2.0
 pip install --no-index --upgrade pip
-pip install --no-index -r requirements.txt
+pip install -r requirements.txt
 
 numclients=150
 batch_size=64
