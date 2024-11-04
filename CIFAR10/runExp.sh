@@ -1,9 +1,13 @@
 #! /bin/bash --
+#SBATCH -J gpu-064
+#SBATCH --ntasks=1
+#SBATCH --gpus=v100
+#SBATCH --time=8-00:00:00
+#SBATCH -o $HOME/Documents/Projects/cudamuca/jobfiles/log/GPU/gpu-potts-064.o-%a
+#SBATCH -e $HOME/Documents/Projects/cudamuca/jobfiles/log/GPU/gpu-potts-064.e-%a
 
 # change cluster
-# import packages
-
-module load CUDA
+module load CUDA/12.6.0
 module load Python/3.12.3-GCCcore-13.3.0
 pip install --upgrade pip
 pip install -r requirements.txt
