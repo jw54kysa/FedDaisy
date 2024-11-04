@@ -5,11 +5,8 @@
 
 module load CUDA
 module load Python/3.9.6-GCCcore-11.2.0
-virtualenv --no-download $SLURM_TMPDIR/env
-source $SLURM_TMPDIR/env/bin/activate
 pip install --no-index --upgrade pip
-
-pip install torch
+pip install --no-index -r requirements.txt
 
 numclients=150
 batch_size=64
