@@ -1,5 +1,12 @@
 #! /bin/bash --
 
+# change cluster
+# import packages
+
+module load CUDA/11.1.1-iccifort-2020.4.304
+python3 -m pip install torch
+
+
 numclients=150
 batch_size=64
 numdat=64
