@@ -4,9 +4,7 @@
 # import packages
 
 module load CUDA
-python3 -m pip install torch
-pip3 install torch
-
+pip install --user torch
 
 numclients=150
 batch_size=64
