@@ -4,8 +4,8 @@
 # import packages
 
 module load CUDA
-module load Python/3.9.6-GCCcore-11.2.0
-pip install --no-index --upgrade pip
+module load Python/3.12.3-GCCcore-13.3.0
+pip install --upgrade pip
 pip install -r requirements.txt
 
 numclients=150
