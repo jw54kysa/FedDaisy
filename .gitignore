@@ -130,3 +130,9 @@ dmypy.json
 
 #IntelliJ
 .idea/
+
+# Data
+data/
+
+# Singularity
+*.sif
