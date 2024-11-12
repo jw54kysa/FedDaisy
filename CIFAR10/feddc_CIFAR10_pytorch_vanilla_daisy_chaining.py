@@ -77,7 +77,7 @@ randomState = args.seed
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
-name = "Vanilla_Fed_DC"
+name = "My_Fed_DC"
 
 mode = 'gpu'
 lossFunction = "CrossEntropyLoss"
@@ -128,18 +128,16 @@ if (args.run_ablation is None):
 
     localDataIndex = np.arange(args.num_clients)
 
-    trainLosses = [[] for _ in range(args.num_clients)]
-    testLosses = [[] for _ in range(args.num_clients)]
-    trainACCs = [[] for _ in range(args.num_clients)]
-    testACCs = [[] for _ in range(args.num_clients)]
-
+    trainLosses = []
+    testLosses = []
+    trainACCs = []
+    testACCs = []
 
     ## Simulation Start
     for t in range(args.num_rounds):
 
         global_weights = None
         for i in range(args.num_clients):
-            global global_weights
             if global_weights: # set current weights
                 clients[i].setParameters(global_weights)
 
@@ -150,21 +148,21 @@ if (args.run_ablation is None):
             # update global weights
             global_weights = clients[i].getParameters()
 
-        # compute the train and test loss for each client (we might have to do that a bit more rarely for efficiency reasons)
+        # compute the train and test loss
         if t % args.report_rounds == 0:
             clients[0].setParameters(global_weights)
 
-            trainloss, trainACC, testloss, testACC = evaluateModel(clients[0], client_idxs[localDataIndex[i]],
+            trainloss, trainACC, testloss, testACC = evaluateModel(clients[0], client_idxs[localDataIndex[0]],
                                                                    X_train, y_train, X_test, y_test)
             if mode == 'gpu':
                 trainloss = trainloss.cpu()
                 testloss = testloss.cpu()
-            trainLosses[i].append(trainloss.numpy())
-            testLosses[i].append(testloss.numpy())
-            trainACCs[i].append(trainACC)
-            testACCs[i].append(testACC)
-            print("average train loss = ", np.mean(trainLosses[-1]), " average test loss = ", np.mean(testLosses[-1]))
-            print("average train accuracy = ", np.mean(trainACCs[-1]), " average test accuracy = ", np.mean(testACCs[-1]))
+            trainLosses.append(trainloss.numpy())
+            testLosses.append(testloss.numpy())
+            trainACCs.append(trainACC)
+            testACCs.append(testACC)
+            print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
+            print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
 
     pickle.dump(trainLosses, open(exp_path + "/trainLosses.pck", 'wb'))
     pickle.dump(testLosses, open(exp_path + "/testLosses.pck", 'wb'))
