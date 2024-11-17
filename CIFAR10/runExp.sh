@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=feddc
 #SBATCH --partition=paula
-#SBATCH -N 1
-#SBATCH --ntasks=1
+#SBATCH -N 2
+#SBATCH --ntasks=2
 #SBATCH --gpus=a30:4
 #SBATCH --mem=128G                    # Adjust memory as needed
 #SBATCH --time=24:00:00             # Set a realistic time limit
