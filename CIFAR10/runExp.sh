@@ -8,7 +8,7 @@
 #SBATCH --time=24:00:00             # Set a realistic time limit
 #SBATCH -o log/%x.out-%j
 #SBATCH -e log/%x.error-%j
-#SBATCH --mail-type=START,END
+#SBATCH --mail-type=BEGIN,END
 
 # use singularity python
 export PYTHONNOUSERSITE=1
