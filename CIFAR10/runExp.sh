@@ -4,6 +4,7 @@
 #SBATCH --ntasks=4
 #SBATCH --partition=paula
 #SBATCH --gpus=a30:4
+#SBATCH --gpus-per-task=1
 #SBATCH --mem=64G                    # Adjust memory as needed
 #SBATCH --time=12:00:00             # Set a realistic time limit
 #SBATCH -o log/%x.out-%j
