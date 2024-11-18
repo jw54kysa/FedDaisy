@@ -1,0 +1,48 @@
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch.py", line 109, in <module>
+    os.mkdir(exp_path)
+FileExistsError: [Errno 17] File exists: 'FedDC_cifar10_resnet18_2024-11-18_12-16-07'
+srun: error: paula08: task 1: Exited with exit code 1
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
+/usr/local/lib/python3.9/site-packages/torch/utils/data/dataloader.py:617: UserWarning: This DataLoader will create 2 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/utils/data/dataloader.py:617: UserWarning: This DataLoader will create 2 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/utils/data/dataloader.py:617: UserWarning: This DataLoader will create 2 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch_vanilla_daisy_chaining.py", line 10, in <module>
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch_vanilla_daisy_chaining.py", line 10, in <module>
+    from matplotlib.sphinxext.plot_directive import clear_state
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch_vanilla_daisy_chaining.py", line 10, in <module>
+    from matplotlib.sphinxext.plot_directive import clear_state
+  File "/usr/local/lib/python3.9/site-packages/matplotlib/sphinxext/plot_directive.py", line 181, in <module>
+  File "/usr/local/lib/python3.9/site-packages/matplotlib/sphinxext/plot_directive.py", line 181, in <module>
+    from matplotlib.sphinxext.plot_directive import clear_state
+  File "/usr/local/lib/python3.9/site-packages/matplotlib/sphinxext/plot_directive.py", line 181, in <module>
+    from docutils.parsers.rst import directives, Directive
+    from docutils.parsers.rst import directives, Directive
+ModuleNotFoundError: No module named 'docutils'
+    from docutils.parsers.rst import directives, Directive
+ModuleNotFoundError: No module named 'docutils'
+ModuleNotFoundError: No module named 'docutils'
+srun: error: paula07: task 0: Exited with exit code 1
+srun: error: paula12: task 2: Exited with exit code 1
+srun: error: paula08: task 1: Exited with exit code 1
