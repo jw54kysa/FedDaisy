@@ -135,7 +135,6 @@ if (args.run_ablation is None):
 
     ## Simulation Start
     for t in range(args.num_rounds):
-        print(f"Round: {t}/{args.num_rounds}", end='\r')
 
         global_weights = None
         for i in range(args.num_clients):
@@ -164,6 +163,7 @@ if (args.run_ablation is None):
             testACCs.append(testACC)
             # print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
             # print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
+            print(f"report round {t}: testAcc: {np.mean(testACCs)}")
 
     print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
     print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))

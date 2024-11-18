@@ -138,7 +138,6 @@ if (args.run_ablation is None):
 
     ## TODO: Move everything (including data) to GPU and only work with indices here.
     for t in range(args.num_rounds):
-        print(f"Round: {t}/{args.num_rounds}", end='\r')
 
         for i in range(args.num_clients):
             sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
@@ -167,6 +166,7 @@ if (args.run_ablation is None):
                 testACCs[i].append(testACC)
             # print("average train loss = ",np.mean(trainLosses[-1]), " average test loss = ",np.mean(testLosses[-1]))
             # print("average train accuracy = ",np.mean(trainACCs[-1]), " average test accuracy = ",np.mean(testACCs[-1]))
+            print(f"report round {t}: testAcc: {np.mean(testACCs[-1])}")
 
     print("average train loss = ", np.mean(trainLosses[-1]), " average test loss = ", np.mean(testLosses[-1]))
     print("average train accuracy = ", np.mean(trainACCs[-1]), " average test accuracy = ", np.mean(testACCs[-1]))
