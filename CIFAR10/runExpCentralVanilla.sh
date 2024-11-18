@@ -3,7 +3,8 @@
 #SBATCH --partition=clara
 #SBATCH -N 1
 #SBATCH --ntasks=1
-#SBATCH --gpus=rtx2080ti
+#SBATCH --cpus-per-task=8
+##SBATCH --gres=gpu:rtx2080ti:1
 #SBATCH --mem=64G
 #SBATCH --time=24:00:00
 #SBATCH -o log/%x.out-%j
