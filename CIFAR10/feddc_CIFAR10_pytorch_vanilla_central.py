@@ -28,13 +28,14 @@ parser.add_argument('--num-samples-per-client', type=int, default=8,
                     help='Number of samples each client has available (default: 8)')
 parser.add_argument('--num-rounds', type=int, default=100,
                     help='Number of rounds of training (default: 100)')
+training_args.add_argument('--lr', type=float, default=0.01,
+                    help='learning rate (default: 0.01)')
 training_args.add_argument('--lr-schedule-ep', type=int, default=None,
                     help='number of epochs after which to change lr (set to None if no schedule) (default: None)')
 training_args.add_argument('--lr-change-rate', type=float, default=0.5,
                     help='(multiplicative) change factor for lr (default: 0.5)')
 parser.add_argument('--report-rounds', type=int, default=25,
                     help='After how many rounds the model should be evaluated and performance reported (default: 25)')
-
 parser.add_argument('--workers', type=int, default='16',
                     help='number of data loading workers (default: 16)')
 parser.add_argument('--seed', type=int, default=42,
