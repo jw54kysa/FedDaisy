@@ -138,6 +138,8 @@ if (args.run_ablation is None):
 
     ## TODO: Move everything (including data) to GPU and only work with indices here.
     for t in range(args.num_rounds):
+        print(f"Round: {t}/{args.num_rounds}", end='\r')
+
         for i in range(args.num_clients):
             sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
             clients[i].update(sample, X_train, y_train) ##TODO: sample is now a list of indices
@@ -163,11 +165,15 @@ if (args.run_ablation is None):
                 testLosses[i].append(testloss.numpy())
                 trainACCs[i].append(trainACC)
                 testACCs[i].append(testACC)
-            print("average train loss = ",np.mean(trainLosses[-1]), " average test loss = ",np.mean(testLosses[-1]))
-            print("average train accuracy = ",np.mean(trainACCs[-1]), " average test accuracy = ",np.mean(testACCs[-1]))
+            # print("average train loss = ",np.mean(trainLosses[-1]), " average test loss = ",np.mean(testLosses[-1]))
+            # print("average train accuracy = ",np.mean(trainACCs[-1]), " average test accuracy = ",np.mean(testACCs[-1]))
 
+    print("average train loss = ", np.mean(trainLosses[-1]), " average test loss = ", np.mean(testLosses[-1]))
+    print("average train accuracy = ", np.mean(trainACCs[-1]), " average test accuracy = ", np.mean(testACCs[-1]))
     pickle.dump(trainLosses, open(exp_path+"/trainLosses.pck",'wb'))
     pickle.dump(testLosses,  open(exp_path+"/testLosses.pck",'wb'))
+    pickle.dump(trainACCs, open(exp_path + "/trainACCs.pck", 'wb'))
+    pickle.dump(testACCs, open(exp_path + "/testACCs.pck", 'wb'))
 
 
 elif (args.run_ablation == 'vanilla_training'):

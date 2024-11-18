@@ -77,7 +77,7 @@ randomState = args.seed
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
-name = "My_Fed_DC"
+name = "Vanilla_Fed_DC"
 
 mode = 'gpu'
 lossFunction = "CrossEntropyLoss"
@@ -135,6 +135,7 @@ if (args.run_ablation is None):
 
     ## Simulation Start
     for t in range(args.num_rounds):
+        print(f"Round: {t}/{args.num_rounds}", end='\r')
 
         global_weights = None
         for i in range(args.num_clients):
@@ -161,8 +162,12 @@ if (args.run_ablation is None):
             testLosses.append(testloss.numpy())
             trainACCs.append(trainACC)
             testACCs.append(testACC)
-            print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
-            print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
+            # print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
+            # print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
 
+    print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
+    print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
     pickle.dump(trainLosses, open(exp_path + "/trainLosses.pck", 'wb'))
     pickle.dump(testLosses, open(exp_path + "/testLosses.pck", 'wb'))
+    pickle.dump(trainACCs, open(exp_path + "/trainACCs.pck", 'wb'))
+    pickle.dump(testACCs, open(exp_path + "/testACCs.pck", 'wb'))
