@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=feddc
+#SBATCH --job-name=my-feddc
 #SBATCH --partition=paula
-#SBATCH -N 2
-#SBATCH --ntasks=2
-#SBATCH --gpus=a30:4
-#SBATCH --mem=128G                    # Adjust memory as needed
-#SBATCH --time=24:00:00             # Set a realistic time limit
+#SBATCH -N 1
+#SBATCH --ntasks=1
+#SBATCH --gpus=a30:2
+#SBATCH --mem=32G                    # Adjust memory as needed
+#SBATCH --time=12:00:00             # Set a realistic time limit
 #SBATCH -o log/%x.out-%j
 #SBATCH -e log/%x.error-%j
 #SBATCH --mail-type=BEGIN,END
