@@ -78,7 +78,7 @@ randomState = args.seed
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
-name = "FedDC_cifar10_resnet18"
+name = f"FedDC_cifar10_resnet18_spc{args.num_samples_per_client}"
 
 aggregator = Average()
 mode = 'gpu'
@@ -109,10 +109,10 @@ os.mkdir(exp_path)
 f = open(exp_path+"/setup.txt",'w')
 out  = "aggregator = "+str(aggregator)+"\n"
 out += "m = "+str(args.num_clients)+"\n n_local = "+str(args.num_samples_per_client)+"\n"
-out += "d = "+str(args.daisy_rounds)+"\n b = "+str(args.aggregate_rounds)+"\n"
+out += "d = "+str(args.daisy_rounds)+"\n b = "+ str(args.aggregate_rounds)+ "\n"
 out += "rounds = "+str(args.num_rounds)+"\n"
 out += "batchSize = "+str(args.train_batch_size)+"\n"
-out += "updateRule = "+str(args.optimizer)+"\n learningRate = "+str(args.lr)+"\n"
+out += "updateRule = "+str(args.optimizer)+"\n learningRate = "+str(args.lr)+ "\n"
 out += "lossFunction = "+str(lossFunction)+"\n"
 out += "randomState = "+str(randomState)+"\n"
 f.write(out)
