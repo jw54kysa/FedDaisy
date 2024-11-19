@@ -91,7 +91,7 @@ os.mkdir(exp_path)
 # log basic experiment properties
 f = open(exp_path + "/setup.txt", 'w')
 out = "m = " + str(args.num_clients) + "\n n_local = " + str(args.num_samples_per_client) + "\n"
-out += "d = " + str(args.daisy_rounds) + "\n b = " + str(args.aggregate_rounds) + "\n"
+out += "d = " + "\n b \n"
 out += "rounds = " + str(args.num_rounds) + "\n"
 out += "batchSize = " + str(args.train_batch_size) + "\n"
 out += "updateRule = " + str(args.optimizer) + "\n learningRate = " + str(args.lr) + "\n"
