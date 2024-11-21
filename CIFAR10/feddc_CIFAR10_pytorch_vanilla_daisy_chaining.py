@@ -144,10 +144,11 @@ for t in range(args.num_rounds):
         testLosses.append(testloss.numpy())
         trainACCs.append(trainACC)
         testACCs.append(testACC)
-        # print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
-        # print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
-        print(f"report round {t}: testAcc: {np.mean(testACCs)}")
+        print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
+        print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
+        #print(f"report round {t}: testAcc: {np.mean(testACCs)}")
 
+print("\nExp finished...\n\n")
 print("average train loss = ", np.mean(trainLosses), " average test loss = ", np.mean(testLosses))
 print("average train accuracy = ", np.mean(trainACCs), " average test accuracy = ", np.mean(testACCs))
 
