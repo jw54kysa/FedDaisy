@@ -1,0 +1,22 @@
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch.py", line 106, in <module>
+    os.mkdir(exp_path)
+FileExistsError: [Errno 17] File exists: 'FedDC_cifar10_resnet18_spc64_2024-11-20_01-20-29'
+srun: error: paula05: task 0: Exited with exit code 1
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch.py", line 106, in <module>
+    os.mkdir(exp_path)
+FileExistsError: [Errno 17] File exists: 'FedDC_cifar10_resnet18_spc8_2024-11-20_05-31-10'
+srun: error: paula05: task 1: Exited with exit code 1
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
