@@ -103,11 +103,8 @@ f.close()
 # get the data
 X_train, y_train, X_test, y_test = getCIFAR10(device)
 n_train = y_train.shape[0]
-if (args.restrict_classes is None):
-    client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
-else:
-    client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng,
-                                               args.restrict_classes)
+
+client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
 
 localDataIndex = np.arange(args.num_clients)
 
