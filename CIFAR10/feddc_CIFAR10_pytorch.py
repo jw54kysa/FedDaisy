@@ -10,9 +10,9 @@ import argparse
 
 from dataset_cifar10 import *
 from averaging import Average
-from resnet import Cifar10ResNet18
+from resnet import Cifar10ResNet50, Cifar10ResNet18
 from client_pytorch import PyTorchNN, evaluateModel
-from createPlot import createLossAccPlot
+from vanilla_training import trainEvalLoopVanilla
 
 
 #set the parameters
@@ -20,7 +20,8 @@ from createPlot import createLossAccPlot
 parser = argparse.ArgumentParser(description='Federated daisy chaining')
 # Training Hyperparameters
 training_args = parser.add_argument_group('training')
-training_args.add_argument('--dataset', type=str, default='cifar10',
+training_args.add_argument('--dataset', type=str, default='mnist',
+                    choices=['cifar10'],
                     help='dataset (default: Cifar10)')
 training_args.add_argument('--model', type=str, default='resnet18', choices=['resnet18'],
                     help='model architecture (default: resnet18)')
@@ -78,7 +79,7 @@ randomState = args.seed
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
-name = f"FedDC_cifar10_resnet18_spc{args.num_samples_per_client}"
+name = "FedDC_cifar10_resnet18"
 
 aggregator = Average()
 mode = 'gpu'
@@ -87,90 +88,114 @@ lossFunction = "CrossEntropyLoss"
 #here it would of course be smarter to have one GPU per client...
 device = torch.device("cuda") #torch.device("cuda:0" if torch.cuda.is_available() else None)
 
-#initialize clients
-clients = []
-for _ in range(args.num_clients):
-    client = PyTorchNN(args.train_batch_size, mode, device)
-    torchnetwork = Cifar10ResNet18() #Cifar10ResNet50()
-    torchnetwork = torchnetwork.cuda(device)
-    client.setCore(torchnetwork)
-    client.setLoss(lossFunction)
-    client.setUpdateRule(args.optimizer, args.lr, args.lr_schedule_ep, args.lr_change_rate)
-    clients.append(client)
+if (args.run_ablation is None):
 
-#get a fixed random number generator
-rng = np.random.RandomState(randomState)
+    #initialize clients
+    clients = []
+    for _ in range(args.num_clients):
+        client = PyTorchNN(args.train_batch_size, mode, device)
+        torchnetwork = Cifar10ResNet18() #Cifar10ResNet50()
+        torchnetwork = torchnetwork.cuda(device)
+        client.setCore(torchnetwork)
+        client.setLoss(lossFunction)
+        client.setUpdateRule(args.optimizer, args.lr, args.lr_schedule_ep, args.lr_change_rate)
+        clients.append(client)
+        
+    #get a fixed random number generator
+    rng = np.random.RandomState(randomState)
 
-#set up a folder for logging
-exp_path = name + "_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
-os.mkdir(exp_path)
+    #set up a folder for logging
+    exp_path = name + "_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
+    os.mkdir(exp_path)
 
-#log basic experiment properties
-f = open(exp_path+"/setup.txt",'w')
-out  = "aggregator = "+str(aggregator)+"\n"
-out += "m = "+str(args.num_clients)+"\n n_local = "+str(args.num_samples_per_client)+"\n"
-out += "d = "+str(args.daisy_rounds)+"\n b = "+ str(args.aggregate_rounds)+ "\n"
-out += "rounds = "+str(args.num_rounds)+"\n"
-out += "batchSize = "+str(args.train_batch_size)+"\n"
-out += "updateRule = "+str(args.optimizer)+"\n learningRate = "+str(args.lr)+ "\n"
-out += "lossFunction = "+str(lossFunction)+"\n"
-out += "randomState = "+str(randomState)+"\n"
-f.write(out)
-f.close()
+    #log basic experiment properties
+    f = open(exp_path+"/setup.txt",'w')
+    out  = "aggregator = "+str(aggregator)+"\n"
+    out += "m = "+str(args.num_clients)+"\n n_local = "+str(args.num_samples_per_client)+"\n"
+    out += "d = "+str(args.daisy_rounds)+"\n b = "+str(args.aggregate_rounds)+"\n"
+    out += "rounds = "+str(args.num_rounds)+"\n"
+    out += "batchSize = "+str(args.train_batch_size)+"\n"
+    out += "updateRule = "+str(args.optimizer)+"\n learningRate = "+str(args.lr)+"\n"
+    out += "lossFunction = "+str(lossFunction)+"\n"
+    out += "randomState = "+str(randomState)+"\n"
+    f.write(out)
+    f.close()
 
-#get the data
-X_train, y_train, X_test, y_test = getCIFAR10(device)
-n_train = y_train.shape[0]
-if (args.restrict_classes is None):
-    client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
-else:
-    client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng, args.restrict_classes)
+    #get the data
+    X_train, y_train, X_test, y_test = getCIFAR10(device)
+    n_train = y_train.shape[0]
+    if (args.restrict_classes is None):
+        client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
+    else:
+        client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng, args.restrict_classes)
 
-localDataIndex = np.arange(args.num_clients)
+    localDataIndex = np.arange(args.num_clients)
 
-trainLosses = [[] for _ in range(args.num_clients)]
-testLosses = [[] for _ in range(args.num_clients)]
-trainACCs = [[] for _ in range(args.num_clients)]
-testACCs = [[] for _ in range(args.num_clients)]
+    trainLosses = [[] for _ in range(args.num_clients)]
+    testLosses = [[] for _ in range(args.num_clients)]
+    trainACCs = [[] for _ in range(args.num_clients)]
+    testACCs = [[] for _ in range(args.num_clients)]
 
-## TODO: Move everything (including data) to GPU and only work with indices here.
-for t in range(args.num_rounds):
-
-    for i in range(args.num_clients):
-        sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
-        clients[i].update(sample, X_train, y_train) ##TODO: sample is now a list of indices
-    if t % args.daisy_rounds == args.daisy_rounds - 1: #daisy chaining
-        rng.shuffle(localDataIndex)
-
-    if t % args.aggregate_rounds == args.aggregate_rounds - 1: #aggregation
-        params = []
-        for i in range(args.num_clients): #get the model parameters (weights) of all clients
-            params.append(clients[i].getParameters())
-        aggParams = aggregator(params) #compute the aggregate
+    ## TODO: Move everything (including data) to GPU and only work with indices here.
+    for t in range(args.num_rounds):
         for i in range(args.num_clients):
-            clients[i].setParameters(aggParams) #give each client the aggregate as new parameters
+            sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
+            clients[i].update(sample, X_train, y_train) ##TODO: sample is now a list of indices
+        if t % args.daisy_rounds == args.daisy_rounds - 1: #daisy chaining
+            rng.shuffle(localDataIndex)
 
-    #compute the train and test loss for each client (we might have to do that a bit more rarely for efficiency reasons)
-    if t % args.report_rounds == 0:
-        for i in range(args.num_clients):
-            trainloss, trainACC, testloss, testACC = evaluateModel(clients[i], client_idxs[localDataIndex[i]], X_train, y_train, X_test, y_test)
-            if mode == 'gpu':
-                trainloss = trainloss.cpu()
-                testloss = testloss.cpu()
-            trainLosses[i].append(trainloss.numpy())
-            testLosses[i].append(testloss.numpy())
-            trainACCs[i].append(trainACC)
-            testACCs[i].append(testACC)
-        # print("average train loss = ",np.mean(trainLosses[-1]), " average test loss = ",np.mean(testLosses[-1]))
-        # print("average train accuracy = ",np.mean(trainACCs[-1]), " average test accuracy = ",np.mean(testACCs[-1]))
-        print(f"report round {t}: testAcc: {np.mean(testACCs[-1])}")
+        if t % args.aggregate_rounds == args.aggregate_rounds - 1: #aggregation
+            params = []
+            for i in range(args.num_clients): #get the model parameters (weights) of all clients
+                params.append(clients[i].getParameters())
+            aggParams = aggregator(params) #compute the aggregate
+            for i in range(args.num_clients): 
+                clients[i].setParameters(aggParams) #give each client the aggregate as new parameters
 
-print("average train loss = ", np.mean(trainLosses[-1]), " average test loss = ", np.mean(testLosses[-1]))
-print("average train accuracy = ", np.mean(trainACCs[-1]), " average test accuracy = ", np.mean(testACCs[-1]))
-pickle.dump(trainLosses, open(exp_path+"/trainLosses.pck",'wb'))
-pickle.dump(testLosses,  open(exp_path+"/testLosses.pck",'wb'))
-pickle.dump(trainACCs, open(exp_path + "/trainACCs.pck", 'wb'))
-pickle.dump(testACCs, open(exp_path + "/testACCs.pck", 'wb'))
+        #compute the train and test loss for each client (we might have to do that a bit more rarely for efficiency reasons)
+        if t % args.report_rounds == 0:
+            for i in range(args.num_clients):
+                trainloss, trainACC, testloss, testACC = evaluateModel(clients[i], client_idxs[localDataIndex[i]], X_train, y_train, X_test, y_test)
+                if mode == 'gpu':
+                    trainloss = trainloss.cpu()
+                    testloss = testloss.cpu()
+                trainLosses[i].append(trainloss.numpy())
+                testLosses[i].append(testloss.numpy())
+                trainACCs[i].append(trainACC)
+                testACCs[i].append(testACC)
+            print("average train loss = ",np.mean(trainLosses[-1]), " average test loss = ",np.mean(testLosses[-1]))
+            print("average train accuracy = ",np.mean(trainACCs[-1]), " average test accuracy = ",np.mean(testACCs[-1]))
 
-# create Plot
-createLossAccPlot(exp_path)
+    pickle.dump(trainLosses, open(exp_path+"/trainLosses.pck",'wb'))
+    pickle.dump(testLosses,  open(exp_path+"/testLosses.pck",'wb'))
+
+
+elif (args.run_ablation == 'vanilla_training'):
+
+    trainloader, testloader, classes = getCIFAR10DataLoader(args.train_batch_size, args.num_clients, args.num_samples_per_client)
+
+    vanillaModel = Cifar10ResNet18().cuda(device)
+
+    if (lossFunction == "CrossEntropyLoss"):   
+        loss = nn.CrossEntropyLoss()
+    else:
+        raise NotImplementedError
+        
+    optimizer = eval("optim." + args.optimizer + "(vanillaModel.parameters(), lr=" + str(args.lr)  + ")")
+
+    ## Compute number of epochs
+    epochs = int(np.ceil(args.num_rounds/np.floor(len(trainloader.dataset)/args.num_samples_per_client)))
+
+
+    if (args.lr_schedule_ep is not None):
+        ## adapt schedule
+        schedule_ep = int(np.floor(args.lr_schedule_ep * (epochs/args.num_rounds)))
+
+        scheduler = optim.lr_scheduler.StepLR(optimizer, schedule_ep, gamma=args.lr_change_rate, last_epoch=-1, verbose=False)
+    else:
+        scheduler = None
+
+
+    trainEvalLoopVanilla(vanillaModel, loss, optimizer, scheduler, trainloader, testloader, epochs, device, args.report_rounds)
+
+
