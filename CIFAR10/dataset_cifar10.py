@@ -50,6 +50,54 @@ def splitIntoLocalData(n, m, n_local, rng):
         i += 1
     return client_idxs
 
+# split data into different-sized samples
+# n len(testdata)
+# m number of clients
+# n_local_min min number of samples per client
+# n_local_max max number of samples per client
+def splitIntoLocalDataRandLen(n, m, n_local_min, n_local_max, rng):
+    if m * n_local_max > n:
+        print("Error: not enough data (n=", n, ") for", m, "sets of size ",
+              n_local_max, ". Reducing local size to", n // m, ".")
+        n_local_max = n // m
+
+    idxs = np.arange(n)
+    rng.shuffle(idxs)
+    i = 0
+    client_idxs = []
+    while (i + 1) * n_local_max <= n and i < m:
+        bucket_size = rng.randint(n_local_min, n_local_max)
+        idx = idxs[i * n_local_max:(i * n_local_max) + bucket_size]
+        client_idxs.append(idx)
+        i += 1
+    return client_idxs
+
+# Probabilistic permutation for localDataIndex
+# samples localDataIndex with respect to samples size
+# larger sample sets are selected with higher probability
+def localDataIndexRandLenPermutation(localDataIndex, client_idxs, with_amp):
+    n = len(localDataIndex)
+    if len(client_idxs) != n:
+        print("localDataIndex, client_idxs not same length !!!")
+        return None
+
+    # Calculate sample sizes
+    sample_sizes = np.array([len(client_idxs[i]) for i in range(n)])
+
+    if with_amp:  # Amplify higher-ranked indices by squaring their sample sizes
+        sample_sizes = sample_sizes ** 2
+
+    # Generate probabilities proportional to sample sizes
+    total_size = sample_sizes.sum()
+    if total_size == 0:
+        print("Total sample size is zero, cannot generate probabilities!")
+        return None
+
+    probabilities = (sample_sizes / total_size)
+
+    permutedDataIndex = np.random.choice(range(n), size=n, replace=True, p=probabilities)
+    return permutedDataIndex
+
 ##TODO: getSample that cycles through all local data batches and only shuffles batches after one epoch. 
 
 def getSample(idxs_of_client, batchSize, rng):

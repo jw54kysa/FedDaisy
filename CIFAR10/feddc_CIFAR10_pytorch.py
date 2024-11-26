@@ -56,6 +56,19 @@ parser.add_argument('--run-ablation', type=str, default=None,
                     choices=['vanilla_training'],
                     help='Type of ablation to run (default: None)')
 
+parser.add_argument('--iid-data', type=str, default=None,
+                    choices=['random_length'],
+                    help='type of local dataset manipulation')
+parser.add_argument('--min-samples', type=int, default=8,
+                    help='Minimal number of samples each client has available (default: 8)')
+parser.add_argument('--max-samples', type=int, default=64,
+                    help='Maximal number of samples each client has available (default: 64)')
+parser.add_argument('--permutation', type=str, default='rand',
+                    choices=['prob'],
+                    help='Type of daisy round permutation.')
+parser.add_argument('--with-amp', type=str, default='yes',
+                    help='Amplification of probabilistic daisy round permutation.')
+
 
 ## Experiment Hyperparameters ##
 # parser.add_argument('--expid', type=str, default='',
@@ -84,6 +97,7 @@ name = "FedDC_cifar10_resnet18"
 aggregator = Average()
 mode = 'gpu'
 lossFunction = "CrossEntropyLoss"
+
 
 #here it would of course be smarter to have one GPU per client...
 device = torch.device("cuda") #torch.device("cuda:0" if torch.cuda.is_available() else None)
@@ -125,11 +139,16 @@ if (args.run_ablation is None):
     X_train, y_train, X_test, y_test = getCIFAR10(device)
     n_train = y_train.shape[0]
     if (args.restrict_classes is None):
-        client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
+        if args.iid_data == 'random_length':
+            client_idxs = splitIntoLocalDataRandLen(n_train, args.num_clients, args.min_samples, args.max_samples, rng)
+            print("SPLITTED LOCAL DATASET INTO RANDOM LENGTH")
+        else:
+            client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
     else:
         client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng, args.restrict_classes)
 
     localDataIndex = np.arange(args.num_clients)
+    withAmp = True if args.with_amp == 'yes' else False
 
     trainLosses = [[] for _ in range(args.num_clients)]
     testLosses = [[] for _ in range(args.num_clients)]
@@ -139,10 +158,18 @@ if (args.run_ablation is None):
     ## TODO: Move everything (including data) to GPU and only work with indices here.
     for t in range(args.num_rounds):
         for i in range(args.num_clients):
-            sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
+            if args.iid_data == 'random_length':
+                # get random length data samples
+                sample = getSample(client_idxs[localDataIndex[i]], len(client_idxs[localDataIndex[i]]), rng) # args.train_batch_size
+            else:
+                sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
             clients[i].update(sample, X_train, y_train) ##TODO: sample is now a list of indices
         if t % args.daisy_rounds == args.daisy_rounds - 1: #daisy chaining
-            rng.shuffle(localDataIndex)
+
+            if args.permutation == 'prob':
+                localDataIndex = localDataIndexRandLenPermutation(localDataIndex, client_idxs, withAmp)
+            else:
+                rng.shuffle(localDataIndex)
 
         if t % args.aggregate_rounds == args.aggregate_rounds - 1: #aggregation
             params = []
