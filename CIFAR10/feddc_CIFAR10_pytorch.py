@@ -92,7 +92,8 @@ randomState = args.seed
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
-name = "FedDC_cifar10_resnet18"
+
+name = f"FedDC_cifar10_iid{args.iid_data}_per{args.permutation}${args.min_samples}${args.max_samples}_nc{args.num_clients}cl_n{args.num_samples_per_client}_b{args.train_batch_size}_d{args.daisy_rounds}_a{args.aggregate_rounds}_lr{args.lr}_schedule{args.lr_schedule_ep}_r{args.num_rounds}_s{args.seed}"
 
 aggregator = Average()
 mode = 'gpu'
@@ -125,13 +126,23 @@ if (args.run_ablation is None):
     #log basic experiment properties
     f = open(exp_path+"/setup.txt",'w')
     out  = "aggregator = "+str(aggregator)+"\n"
-    out += "m = "+str(args.num_clients)+"\n n_local = "+str(args.num_samples_per_client)+"\n"
-    out += "d = "+str(args.daisy_rounds)+"\n b = "+str(args.aggregate_rounds)+"\n"
+    out += "m = "+str(args.num_clients)+"\nn_local = "+str(args.num_samples_per_client)+"\n"
+    out += "d = "+str(args.daisy_rounds)+"\nb = "+str(args.aggregate_rounds)+"\n"
     out += "rounds = "+str(args.num_rounds)+"\n"
     out += "batchSize = "+str(args.train_batch_size)+"\n"
-    out += "updateRule = "+str(args.optimizer)+"\n learningRate = "+str(args.lr)+"\n"
+    out += "updateRule = "+str(args.optimizer)+"\nlearningRate = "+str(args.lr)+"\n"
     out += "lossFunction = "+str(lossFunction)+"\n"
     out += "randomState = "+str(randomState)+"\n"
+
+    out += f"""
+    
+    iid-data = {args.iid_data}
+    min-samples = {args.min_samples}
+    max-samples = {args.max_samples}
+    permutation = {args.permutation}
+    with-amp = {args.with_amp}
+    
+    """
     f.write(out)
     f.close()
 
