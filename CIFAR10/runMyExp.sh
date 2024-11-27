@@ -50,8 +50,6 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --seed $seed \
     | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
 
-per='prob'
-
 srun singularity exec --nv FEDDC.sif \
 python3.9 -u feddc_CIFAR10_pytorch.py \
     --optimizer SGD \
@@ -67,7 +65,7 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --iid-data "$iid" \
     --min-samples $min \
     --max-samples $max \
-    --permutation "$per" \
+    --permutation "prob" \
     --aggregate-rounds $avg \
     --seed $seed \
     | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
@@ -88,7 +86,9 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --iid-data "$iid" \
     --min-samples $min \
     --max-samples $max \
-    --permutation "$per" \
+    --permutation "prob" \
     --with-amp \
     --seed $seed \
     | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
+
+wait
