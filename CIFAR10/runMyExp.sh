@@ -2,8 +2,9 @@
 #SBATCH --job-name=runMyExp
 #SBATCH --partition=paula
 #SBATCH -N 1
-#SBATCH --ntasks=1
+#SBATCH --ntasks=3
 #SBATCH --gpus=a30:2
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=1-00:00:00
 #SBATCH -o log/%x.out-%j
