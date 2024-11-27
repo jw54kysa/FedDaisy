@@ -2,9 +2,9 @@
 #SBATCH --job-name=runMyExp
 #SBATCH --partition=paula
 #SBATCH -N 1
-#SBATCH --ntasks=3
-#SBATCH --gpus=a30:2
-#SBATCH --cpus-per-task=4
+#SBATCH --ntasks=1
+#SBATCH --gpus=a30:1
+#SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
 #SBATCH --time=1-00:00:00
 #SBATCH -o log/%x.out-%j
@@ -28,7 +28,8 @@ avg=10
 iid='randsize'
 min=8
 max=64
-per='rand'
+per='rand' # prob
+#    --with-amp \
 
 srun singularity exec --nv FEDDC.sif \
 python3.9 -u feddc_CIFAR10_pytorch.py \
@@ -48,47 +49,4 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --permutation "$per" \
     --aggregate-rounds $avg \
     --seed $seed \
-    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
-
-srun singularity exec --nv FEDDC.sif \
-python3.9 -u feddc_CIFAR10_pytorch.py \
-    --optimizer SGD \
-    --train-batch-size $batch_size \
-    --lr 0.1 \
-    --lr-schedule-ep ${schedrounds} \
-    --lr-change-rate 0.5 \
-    --num-clients $numclients \
-    --num-rounds $numrounds \
-    --num-samples-per-client $numdat \
-    --report-rounds 250 \
-    --daisy-rounds $daisy \
-    --iid-data "$iid" \
-    --min-samples $min \
-    --max-samples $max \
-    --permutation "prob" \
-    --aggregate-rounds $avg \
-    --seed $seed \
-    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
-
-srun singularity exec --nv FEDDC.sif \
-python3.9 -u feddc_CIFAR10_pytorch.py \
-    --optimizer SGD \
-    --train-batch-size $batch_size \
-    --lr 0.1 \
-    --lr-schedule-ep ${schedrounds} \
-    --lr-change-rate 0.5 \
-    --num-clients $numclients \
-    --num-rounds $numrounds \
-    --num-samples-per-client $numdat \
-    --report-rounds 250 \
-    --daisy-rounds $daisy \
-    --aggregate-rounds $avg \
-    --iid-data "$iid" \
-    --min-samples $min \
-    --max-samples $max \
-    --permutation "prob" \
-    --with-amp \
-    --seed $seed \
-    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
-
-wait
+    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log
