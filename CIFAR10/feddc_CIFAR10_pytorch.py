@@ -96,7 +96,7 @@ np.random.seed(args.seed)
 
 iid_data_info=""
 if args.iid_data == 'randsize':
-    iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}_per{args.permutation}_{"amp_" if args.with_amp else ""}"
+    iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}_per{args.permutation}_{'amp_' if args.with_amp else ''}"
 name = f"FedDC_cifar10_{iid_data_info}nc{args.num_clients}cl_n{args.num_samples_per_client}_b{args.train_batch_size}_d{args.daisy_rounds}_a{args.aggregate_rounds}_lr0_schedule{args.lr_schedule_ep}_r{args.num_rounds}_s{args.seed}"
 
 aggregator = Average()
