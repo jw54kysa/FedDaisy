@@ -14,6 +14,7 @@ from resnet import Cifar10ResNet50, Cifar10ResNet18
 from client_pytorch import PyTorchNN, evaluateModel
 from vanilla_training import trainEvalLoopVanilla
 
+from createPlot import createLossAccPlot
 
 #set the parameters
 
@@ -204,8 +205,11 @@ with-amp = {args.with_amp}
             print("average train accuracy = ",np.mean(trainACCs[-1]), " average test accuracy = ",np.mean(testACCs[-1]))
 
     pickle.dump(trainLosses, open(exp_path+"/trainLosses.pck",'wb'))
-    pickle.dump(testLosses,  open(exp_path+"/testLosses.pck",'wb'))
+    pickle.dump(testLosses, open(exp_path+"/testLosses.pck",'wb'))
+    pickle.dump(trainACCs, open(exp_path + "/trainACCs.pck", 'wb'))
+    pickle.dump(testACCs, open(exp_path + "/testACCs.pck", 'wb'))
 
+    createLossAccPlot(exp_path)
 
 elif (args.run_ablation == 'vanilla_training'):
 

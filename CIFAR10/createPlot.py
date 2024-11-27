@@ -15,37 +15,36 @@ def createLossAccPlot(exp_path):
     with open(exp_path+"/trainACCs.pck", "rb") as f:
         trainAcc = pickle.load(f)
 
-    # Generate epochs based on the length of the losses
-    x_val = range(1, len(testLosses[0]) + 1)
+    def calculate_column_averages(data):
+        columns = zip(*data)
+        averages = [sum(column) / len(column) for column in columns]
+        return averages
 
-    # Create a figure and axis
-    fig, ax1 = plt.subplots(figsize=(10, 6))
+    # Get averages
+    testLossAvg = calculate_column_averages(testLosses)
+    trainLossAvg = calculate_column_averages(trainLosses)
+    testAccAvg = calculate_column_averages(testAcc)
+    trainAccAvg = calculate_column_averages(trainAcc)
 
-    # Plot loss on the left y-axis
-    ax1.set_xlabel("Record Round")
-    ax1.set_ylabel("Loss", color="blue")
-    for i in range(5):
-        ax1.plot(x_val, testLosses[i], marker='o', label=f"Test Loss {i + 1}", color="blue", alpha=0.5)
-        ax1.plot(x_val, trainLosses[i], marker='x', label=f"Train Loss {i + 1}", linestyle='dashed', color="cyan",
-                 alpha=0.5)
-    ax1.tick_params(axis='y', labelcolor="blue")
-    ax1.grid(True)
+    fig, ax1 = plt.subplots(figsize=(8, 5))
 
-    # Create a second y-axis for accuracy
+    # loss
+    ax1.plot(testLossAvg, marker='o', linestyle='-', color='g', label='Test Loss')
+    ax1.plot(trainLossAvg, marker='o', linestyle='-', color='b', label='Train Loss')
+    ax1.set_title("Experiment Accuracy & Losses", fontsize=10)
+    ax1.set_xlabel("Report Round", fontsize=10)
+    ax1.set_ylabel("Loss", fontsize=10, color='k')
+    ax1.tick_params(axis='y', labelcolor='k')
+    ax1.grid(True, linestyle='--', alpha=0.6)
+
+    # accuracy
     ax2 = ax1.twinx()
-    ax2.set_ylabel("Accuracy", color="green")
-    for i in range(5):
-        ax2.plot(x_val, testAcc[i], marker='o', label=f"Test Acc {i + 1}", color="green", alpha=0.5)
-        ax2.plot(x_val, trainAcc[i], marker='x', label=f"Train Acc {i + 1}", linestyle='dashed', color="lime",
-                 alpha=0.5)
-    ax2.tick_params(axis='y', labelcolor="green")
+    ax2.plot(testAccAvg, marker='s', linestyle='--', color='g', label='Test Accuracy')
+    ax2.plot(trainAccAvg, marker='s', linestyle='--', color='b', label='Train Accuracy')
+    ax2.set_ylabel("Accuracy", fontsize=10, color='g')
+    ax2.tick_params(axis='y', labelcolor='g')
 
-    # Combine legends from both axes
-    lines_1, labels_1 = ax1.get_legend_handles_labels()
-    lines_2, labels_2 = ax2.get_legend_handles_labels()
-    # ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc="upper center", ncol=2)
-
-    plt.title("Training and Test Loss/Accuracy")
+    fig.legend(loc="upper center", bbox_to_anchor=(0.5, 1), bbox_transform=ax1.transAxes, fontsize=10)
     plt.tight_layout()
-    plt.show()
+    # plt.show()
     plt.savefig(exp_path+"/lossAcc.png")
