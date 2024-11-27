@@ -24,7 +24,7 @@ seed=1
 daisy=1
 avg=10
 
-iid='random_length'
+iid='randlen'
 min=8
 max=64
 per='rand'

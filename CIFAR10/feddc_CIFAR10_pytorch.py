@@ -57,7 +57,7 @@ parser.add_argument('--run-ablation', type=str, default=None,
                     help='Type of ablation to run (default: None)')
 
 parser.add_argument('--iid-data', type=str, default=None,
-                    choices=['random_length'],
+                    choices=['randsize'],
                     help='type of local dataset manipulation')
 parser.add_argument('--min-samples', type=int, default=8,
                     help='Minimal number of samples each client has available (default: 8)')
@@ -92,8 +92,10 @@ randomState = args.seed
 torch.manual_seed(args.seed)
 np.random.seed(args.seed)
 
-
-name = f"FedDC_cifar10_iid{args.iid_data}_per{args.permutation}${args.min_samples}${args.max_samples}_nc{args.num_clients}cl_n{args.num_samples_per_client}_b{args.train_batch_size}_d{args.daisy_rounds}_a{args.aggregate_rounds}_lr{args.lr}_schedule{args.lr_schedule_ep}_r{args.num_rounds}_s{args.seed}"
+iid_data_info=""
+if args.iid_data == 'randsize':
+    iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}_per{args.permutation}_"
+name = f"FedDC_cifar10_{iid_data_info}nc{args.num_clients}cl_n{args.num_samples_per_client}_b{args.train_batch_size}_d{args.daisy_rounds}_a{args.aggregate_rounds}_lr0_schedule{args.lr_schedule_ep}_r{args.num_rounds}_s{args.seed}"
 
 aggregator = Average()
 mode = 'gpu'
@@ -135,13 +137,11 @@ if (args.run_ablation is None):
     out += "randomState = "+str(randomState)+"\n"
 
     out += f"""
-    
-    iid-data = {args.iid_data}
-    min-samples = {args.min_samples}
-    max-samples = {args.max_samples}
-    permutation = {args.permutation}
-    with-amp = {args.with_amp}
-    
+iid-data = {args.iid_data}
+min-samples = {args.min_samples}
+max-samples = {args.max_samples}
+permutation = {args.permutation}
+with-amp = {args.with_amp}    
     """
     f.write(out)
     f.close()
@@ -150,9 +150,8 @@ if (args.run_ablation is None):
     X_train, y_train, X_test, y_test = getCIFAR10(device)
     n_train = y_train.shape[0]
     if (args.restrict_classes is None):
-        if args.iid_data == 'random_length':
+        if args.iid_data == 'randsize':
             client_idxs = splitIntoLocalDataRandLen(n_train, args.num_clients, args.min_samples, args.max_samples, rng)
-            print("SPLITTED LOCAL DATASET INTO RANDOM LENGTH")
         else:
             client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
     else:
@@ -169,7 +168,7 @@ if (args.run_ablation is None):
     ## TODO: Move everything (including data) to GPU and only work with indices here.
     for t in range(args.num_rounds):
         for i in range(args.num_clients):
-            if args.iid_data == 'random_length':
+            if args.iid_data == 'randsize':
                 # get random length data samples
                 sample = getSample(client_idxs[localDataIndex[i]], len(client_idxs[localDataIndex[i]]), rng) # args.train_batch_size
             else:
