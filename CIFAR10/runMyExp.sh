@@ -2,7 +2,7 @@
 #SBATCH --job-name=runMyExp
 #SBATCH --partition=paula
 #SBATCH -N 1
-#SBATCH --ntasks=2
+#SBATCH --ntasks=1
 #SBATCH --gpus=a30:2
 #SBATCH --mem=16G
 #SBATCH --time=1-00:00:00
@@ -68,5 +68,26 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --max-samples $max \
     --permutation "$per" \
     --aggregate-rounds $avg \
+    --seed $seed \
+    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log
+
+srun singularity exec --nv FEDDC.sif \
+python3.9 -u feddc_CIFAR10_pytorch.py \
+    --optimizer SGD \
+    --train-batch-size $batch_size \
+    --lr 0.1 \
+    --lr-schedule-ep ${schedrounds} \
+    --lr-change-rate 0.5 \
+    --num-clients $numclients \
+    --num-rounds $numrounds \
+    --num-samples-per-client $numdat \
+    --report-rounds 250 \
+    --daisy-rounds $daisy \
+    --aggregate-rounds $avg \
+    --iid-data "$iid" \
+    --min-samples $min \
+    --max-samples $max \
+    --permutation "$per" \
+    --with-amp \
     --seed $seed \
     | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log

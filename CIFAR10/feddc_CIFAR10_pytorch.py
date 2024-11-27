@@ -65,10 +65,11 @@ parser.add_argument('--min-samples', type=int, default=8,
 parser.add_argument('--max-samples', type=int, default=64,
                     help='Maximal number of samples each client has available (default: 64)')
 parser.add_argument('--permutation', type=str, default='rand',
-                    choices=['prob'],
+                    choices=['rand', 'prob'],
                     help='Type of daisy round permutation.')
-parser.add_argument('--with-amp', type=str, default='yes',
-                    help='Amplification of probabilistic daisy round permutation.')
+parser.add_argument("--with-amp",
+                    action="store_true",
+                    help="Amplification of probabilistic daisy round permutation.")
 
 
 ## Experiment Hyperparameters ##
@@ -95,7 +96,7 @@ np.random.seed(args.seed)
 
 iid_data_info=""
 if args.iid_data == 'randsize':
-    iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}_per{args.permutation}_"
+    iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}_per{args.permutation}_{"amp_" if args.with_amp else ""}"
 name = f"FedDC_cifar10_{iid_data_info}nc{args.num_clients}cl_n{args.num_samples_per_client}_b{args.train_batch_size}_d{args.daisy_rounds}_a{args.aggregate_rounds}_lr0_schedule{args.lr_schedule_ep}_r{args.num_rounds}_s{args.seed}"
 
 aggregator = Average()
@@ -159,7 +160,6 @@ with-amp = {args.with_amp}
         client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng, args.restrict_classes)
 
     localDataIndex = np.arange(args.num_clients)
-    withAmp = True if args.with_amp == 'yes' else False
 
     trainLosses = [[] for _ in range(args.num_clients)]
     testLosses = [[] for _ in range(args.num_clients)]
@@ -178,7 +178,7 @@ with-amp = {args.with_amp}
         if t % args.daisy_rounds == args.daisy_rounds - 1: #daisy chaining
 
             if args.permutation == 'prob':
-                localDataIndex = localDataIndexRandLenPermutation(localDataIndex, client_idxs, withAmp)
+                localDataIndex = localDataIndexRandLenPermutation(localDataIndex, client_idxs, args.with_amp)
             else:
                 rng.shuffle(localDataIndex)
 
