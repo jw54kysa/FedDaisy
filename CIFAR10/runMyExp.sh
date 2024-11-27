@@ -48,7 +48,7 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --permutation "$per" \
     --aggregate-rounds $avg \
     --seed $seed \
-    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log
+    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
 
 per='prob'
 
@@ -70,7 +70,7 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --permutation "$per" \
     --aggregate-rounds $avg \
     --seed $seed \
-    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log
+    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
 
 srun singularity exec --nv FEDDC.sif \
 python3.9 -u feddc_CIFAR10_pytorch.py \
@@ -91,4 +91,4 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --permutation "$per" \
     --with-amp \
     --seed $seed \
-    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log
+    | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log &
