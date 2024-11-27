@@ -1,0 +1,196 @@
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+srun: error: paula10: task 3: Exited with exit code 2
+srun: error: paula10: tasks 0-2: Exited with exit code 2
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+usage: feddc_CIFAR10_pytorch.py [-h] [--dataset {cifar10}]
+                                [--model {resnet18}] [--optimizer {SGD,Adam}]
+                                [--train-batch-size TRAIN_BATCH_SIZE]
+                                [--lr LR] [--lr-schedule-ep LR_SCHEDULE_EP]
+                                [--lr-change-rate LR_CHANGE_RATE]
+                                [--num-clients NUM_CLIENTS]
+                                [--num-rounds NUM_ROUNDS]
+                                [--num-samples-per-client NUM_SAMPLES_PER_CLIENT]
+                                [--report-rounds REPORT_ROUNDS]
+                                [--daisy-rounds DAISY_ROUNDS]
+                                [--aggregate-rounds AGGREGATE_ROUNDS]
+                                [--restrict-classes RESTRICT_CLASSES]
+                                [--run-ablation {vanilla_training}]
+                                [--iid-data {random_length}]
+                                [--min-samples MIN_SAMPLES]
+                                [--max-samples MAX_SAMPLES]
+                                [--permutation {prob}] [--with-amp WITH_AMP]
+                                [--workers WORKERS] [--seed SEED]
+feddc_CIFAR10_pytorch.py: error: argument --permutation: invalid choice: 'rand' (choose from 'prob')
+srun: error: paula10: task 3: Exited with exit code 2
+srun: error: paula10: tasks 0-2: Exited with exit code 2
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch.py", line 124, in <module>
+    os.mkdir(exp_path)
+FileExistsError: [Errno 17] File exists: 'FedDC_cifar10_iidrandom_length_perprob$8$64_nc150cl_n64_b64_d1_a10_lr0.1_schedule200_r1000_s1_2024-11-27_00-07-52'
+srun: error: paula10: task 1: Exited with exit code 1
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+/usr/local/lib/python3.9/site-packages/torch/optim/lr_scheduler.py:62: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch.py", line 124, in <module>
+Traceback (most recent call last):
+  File "/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/feddc_CIFAR10_pytorch.py", line 124, in <module>
+    os.mkdir(exp_path)
+FileExistsError: [Errno 17] File exists: 'FedDC_cifar10_iidrandom_length_perprob$8$64_nc150cl_n64_b64_d10_a100_lr0.1_schedule200_r1000_s1_2024-11-27_01-01-32'
+    os.mkdir(exp_path)
+FileExistsError: [Errno 17] File exists: 'FedDC_cifar10_iidrandom_length_perprob$8$64_nc150cl_n64_b64_d10_a100_lr0.1_schedule200_r1000_s1_2024-11-27_01-01-32'
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
+srun: error: paula10: tasks 0-1: Exited with exit code 1
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
