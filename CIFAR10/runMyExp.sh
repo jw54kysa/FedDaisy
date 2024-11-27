@@ -41,10 +41,10 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --num-samples-per-client $numdat \
     --report-rounds 250 \
     --daisy-rounds $daisy \
-    --iid-data $iid \
+    --iid-data "$iid" \
     --min-samples $min \
     --max-samples $max \
-    --permutation $per \
+    --permutation "$per" \
     --aggregate-rounds $avg \
     --seed $seed \
     | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log
@@ -63,10 +63,10 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --num-samples-per-client $numdat \
     --report-rounds 250 \
     --daisy-rounds $daisy \
-    --iid-data $iid \
+    --iid-data "$iid" \
     --min-samples $min \
     --max-samples $max \
-    --permutation $per \
+    --permutation "$per" \
     --aggregate-rounds $avg \
     --seed $seed \
     | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log

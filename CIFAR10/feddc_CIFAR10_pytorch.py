@@ -65,7 +65,7 @@ parser.add_argument('--min-samples', type=int, default=8,
 parser.add_argument('--max-samples', type=int, default=64,
                     help='Maximal number of samples each client has available (default: 64)')
 parser.add_argument('--permutation', type=str, default='rand',
-                    choices=['rand', 'prob'],
+                    choices=['prob'],
                     help='Type of daisy round permutation.')
 parser.add_argument('--with-amp', type=str, default='yes',
                     help='Amplification of probabilistic daisy round permutation.')
