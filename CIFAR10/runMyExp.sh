@@ -18,7 +18,7 @@ numclients=150
 batch_size=64
 numdat=64
 numrounds=10000
-schedrounds=200
+schedrounds=2500
 
 seed=1
 
@@ -28,7 +28,7 @@ avg=10
 iid='randsize'
 min=8
 max=64
-per='rand' # prob
+per='prob' #'rand'
 #    --with-amp \
 
 srun singularity exec --nv FEDDC.sif \
@@ -47,6 +47,7 @@ python3.9 -u feddc_CIFAR10_pytorch.py \
     --min-samples $min \
     --max-samples $max \
     --permutation "$per" \
+    --with-amp \
     --aggregate-rounds $avg \
     --seed $seed \
     | tee CompExp_Cifar10_iid${iid}_${per}${min}${max}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_schedule${schedrounds}_r${numrounds}_s${seed}.log
