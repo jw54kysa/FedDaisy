@@ -33,7 +33,7 @@ class PyTorchNN():
         for k in kwargs:
             additional_params += ", " + k  + "=" + str(kwargs.get(k))
         self._updateRule = eval("optim." + updateRule + "(self._core.parameters(), lr=" + str(learningRate) + additional_params + ")")
-        if (schedule_ep is not None):
+        if schedule_ep is not None:
             self._schedule = optim.lr_scheduler.StepLR(self._updateRule, schedule_ep, gamma=schedule_changerate, last_epoch=-1, verbose=False)
         else:
             self._schedule = None
@@ -88,7 +88,8 @@ class PyTorchNN():
         loss = self._loss(output, y[sample])
         loss.backward()
         self._updateRule.step()    # Does the update
-        self._schedule.step()
+        if self._schedule is not None:
+            self._schedule.step()
         return [loss.data.cpu().numpy(), output.data.cpu().numpy()]
 
     def setParameters(self, param : PyTorchNNParameters):

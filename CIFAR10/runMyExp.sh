@@ -1,12 +1,12 @@
 #!/bin/bash --
-#SBATCH --job-name=runMyExp
+#SBATCH --job-name=runProbPermExp
 #SBATCH --partition=paula
 #SBATCH -N 1
 #SBATCH --ntasks=1
 #SBATCH --gpus=a30:4
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
-#SBATCH --time=1-00:00:00
+#SBATCH --time=2-00:00:00
 #SBATCH -o log/%x.out-%j
 #SBATCH -e log/%x.error-%j
 #SBATCH --mail-type=BEGIN,END
@@ -32,7 +32,7 @@ per='rand' #'prob'
 #    --with-amp \
 
 srun singularity exec --nv FEDDC.sif \
-python3.9 -u feddc_CIFAR10_pytorch.py \
+python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --optimizer SGD \
     --train-batch-size $batch_size \
     --lr 0.1 \
