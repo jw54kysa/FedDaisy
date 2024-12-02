@@ -22,8 +22,8 @@ numrounds=5000
 
 seed=1
 
-daisy=1
-avg=10
+daisy=10
+avg=100
 
 iid='randsize'
 min=8
