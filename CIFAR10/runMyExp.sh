@@ -22,7 +22,7 @@ numrounds=5000
 
 seed=1
 
-daisy=20
+daisy=50
 avg=100
 
 iid='randsize'
