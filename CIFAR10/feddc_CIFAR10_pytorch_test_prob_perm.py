@@ -103,7 +103,17 @@ lossFunction = "CrossEntropyLoss"
 # here it would of course be smarter to have one GPU per client...
 device = torch.device("cuda")  # torch.device("cuda:0" if torch.cuda.is_available() else None)
 
-if (args.run_ablation is None):
+for perm in ['rand', 'prob', 'prob_amp']:
+
+    if perm == 'rand':
+        args.permutation = perm
+    elif perm == 'prob':
+        args.permutation = perm
+        args.with_amp = False
+    elif perm == 'prob_amp':
+        args.permutation = 'prob'
+        args.with_amp = True
+
 
     # initialize clients
     clients = []
@@ -121,6 +131,7 @@ if (args.run_ablation is None):
 
     # set up a folder for logging
     exp_path = name + "_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
+    exp_path += perm
     os.mkdir(exp_path)
 
     # log basic experiment properties
@@ -142,7 +153,6 @@ permutation = {args.permutation}
 with-amp = {args.with_amp}    
     """
 
-
     # get the data
     X_train, y_train, X_test, y_test = getCIFAR10(device)
     n_train = y_train.shape[0]
@@ -155,8 +165,7 @@ with-amp = {args.with_amp}
         client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng,
                                                    args.restrict_classes)
 
-    flattened = np.array(client_idxs, dtype=object).flatten()
-    total_count = sum(1 for item in flattened if isinstance(item, (int, float)))
+    total_count = sum(len(sublist) for sublist in client_idxs)
     print(f"Total number of samples: {total_count}")
     out += f"""
 X_train = {len(X_train)}
@@ -176,12 +185,7 @@ total_sample_count = {total_count}
     trainACCs = [[] for _ in range(args.num_clients)]
     testACCs = [[] for _ in range(args.num_clients)]
 
-    args.permutation = 'rand'
-    version = 'rand'
-    exp_path = exp_path + "/" + version
-    os.mkdir(exp_path)
-
-    ## Start 1
+    ## TODO: Move everything (including data) to GPU and only work with indices here.
     for t in range(args.num_rounds):
         for i in range(args.num_clients):
             if args.iid_data == 'randsize':
@@ -228,159 +232,3 @@ total_sample_count = {total_count}
     pickle.dump(testACCs, open(exp_path + "/testACCs.pck", 'wb'))
 
     createLossAccPlot(exp_path)
-
-    # START 2
-
-    args.permutation = 'prob'
-
-    version = 'probNoAmp'
-    args.with_amp = False
-    exp_path = exp_path + "/" + version
-    os.mkdir(exp_path)
-
-    localDataIndex = np.arange(args.num_clients)
-
-    trainLosses = [[] for _ in range(args.num_clients)]
-    testLosses = [[] for _ in range(args.num_clients)]
-    trainACCs = [[] for _ in range(args.num_clients)]
-    testACCs = [[] for _ in range(args.num_clients)]
-
-    for t in range(args.num_rounds):
-        for i in range(args.num_clients):
-            if args.iid_data == 'randsize':
-                # get random length data samples
-                sample = getSample(client_idxs[localDataIndex[i]], len(client_idxs[localDataIndex[i]]),
-                                   rng)  # args.train_batch_size
-            else:
-                sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
-            clients[i].update(sample, X_train, y_train)  ##TODO: sample is now a list of indices
-        if t % args.daisy_rounds == args.daisy_rounds - 1:  # daisy chaining
-
-            if args.permutation == 'prob':
-                localDataIndex = localDataIndexRandLenPermutation(localDataIndex, client_idxs, args.with_amp)
-            else:
-                rng.shuffle(localDataIndex)
-
-        if t % args.aggregate_rounds == args.aggregate_rounds - 1:  # aggregation
-            params = []
-            for i in range(args.num_clients):  # get the model parameters (weights) of all clients
-                params.append(clients[i].getParameters())
-            aggParams = aggregator(params)  # compute the aggregate
-            for i in range(args.num_clients):
-                clients[i].setParameters(aggParams)  # give each client the aggregate as new parameters
-
-        # compute the train and test loss for each client (we might have to do that a bit more rarely for efficiency reasons)
-        if t % args.report_rounds == 0:
-            for i in range(args.num_clients):
-                trainloss, trainACC, testloss, testACC = evaluateModel(clients[i], client_idxs[localDataIndex[i]],
-                                                                       X_train, y_train, X_test, y_test)
-                if mode == 'gpu':
-                    trainloss = trainloss.cpu()
-                    testloss = testloss.cpu()
-                trainLosses[i].append(trainloss.numpy())
-                testLosses[i].append(testloss.numpy())
-                trainACCs[i].append(trainACC)
-                testACCs[i].append(testACC)
-            print("average train loss = ", np.mean(trainLosses[-1]), " average test loss = ", np.mean(testLosses[-1]))
-            print("average train accuracy = ", np.mean(trainACCs[-1]), " average test accuracy = ",
-                  np.mean(testACCs[-1]))
-
-    pickle.dump(trainLosses, open(exp_path + "/trainLosses.pck", 'wb'))
-    pickle.dump(testLosses, open(exp_path + "/testLosses.pck", 'wb'))
-    pickle.dump(trainACCs, open(exp_path + "/trainACCs.pck", 'wb'))
-    pickle.dump(testACCs, open(exp_path + "/testACCs.pck", 'wb'))
-
-    createLossAccPlot(exp_path)
-
-    # START 3
-    args.permutation = 'prob'
-    args.with_amp = True
-    version = 'probAmp'
-
-    exp_path = exp_path + "/" + version
-    os.mkdir(exp_path)
-
-    localDataIndex = np.arange(args.num_clients)
-
-    trainLosses = [[] for _ in range(args.num_clients)]
-    testLosses = [[] for _ in range(args.num_clients)]
-    trainACCs = [[] for _ in range(args.num_clients)]
-    testACCs = [[] for _ in range(args.num_clients)]
-
-    for t in range(args.num_rounds):
-        for i in range(args.num_clients):
-            if args.iid_data == 'randsize':
-                # get random length data samples
-                sample = getSample(client_idxs[localDataIndex[i]], len(client_idxs[localDataIndex[i]]),
-                                   rng)  # args.train_batch_size
-            else:
-                sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
-            clients[i].update(sample, X_train, y_train)  ##TODO: sample is now a list of indices
-        if t % args.daisy_rounds == args.daisy_rounds - 1:  # daisy chaining
-
-            if args.permutation == 'prob':
-                localDataIndex = localDataIndexRandLenPermutation(localDataIndex, client_idxs, args.with_amp)
-            else:
-                rng.shuffle(localDataIndex)
-
-        if t % args.aggregate_rounds == args.aggregate_rounds - 1:  # aggregation
-            params = []
-            for i in range(args.num_clients):  # get the model parameters (weights) of all clients
-                params.append(clients[i].getParameters())
-            aggParams = aggregator(params)  # compute the aggregate
-            for i in range(args.num_clients):
-                clients[i].setParameters(aggParams)  # give each client the aggregate as new parameters
-
-        # compute the train and test loss for each client (we might have to do that a bit more rarely for efficiency reasons)
-        if t % args.report_rounds == 0:
-            for i in range(args.num_clients):
-                trainloss, trainACC, testloss, testACC = evaluateModel(clients[i], client_idxs[localDataIndex[i]],
-                                                                       X_train, y_train, X_test, y_test)
-                if mode == 'gpu':
-                    trainloss = trainloss.cpu()
-                    testloss = testloss.cpu()
-                trainLosses[i].append(trainloss.numpy())
-                testLosses[i].append(testloss.numpy())
-                trainACCs[i].append(trainACC)
-                testACCs[i].append(testACC)
-            print("average train loss = ", np.mean(trainLosses[-1]), " average test loss = ", np.mean(testLosses[-1]))
-            print("average train accuracy = ", np.mean(trainACCs[-1]), " average test accuracy = ",
-                  np.mean(testACCs[-1]))
-
-    pickle.dump(trainLosses, open(exp_path + "/trainLosses.pck", 'wb'))
-    pickle.dump(testLosses, open(exp_path + "/testLosses.pck", 'wb'))
-    pickle.dump(trainACCs, open(exp_path + "/trainACCs.pck", 'wb'))
-    pickle.dump(testACCs, open(exp_path + "/testACCs.pck", 'wb'))
-
-    createLossAccPlot(exp_path)
-
-elif (args.run_ablation == 'vanilla_training'):
-
-    trainloader, testloader, classes = getCIFAR10DataLoader(args.train_batch_size, args.num_clients,
-                                                            args.num_samples_per_client)
-
-    vanillaModel = Cifar10ResNet18().cuda(device)
-
-    if (lossFunction == "CrossEntropyLoss"):
-        loss = nn.CrossEntropyLoss()
-    else:
-        raise NotImplementedError
-
-    optimizer = eval("optim." + args.optimizer + "(vanillaModel.parameters(), lr=" + str(args.lr) + ")")
-
-    ## Compute number of epochs
-    epochs = int(np.ceil(args.num_rounds / np.floor(len(trainloader.dataset) / args.num_samples_per_client)))
-
-    if (args.lr_schedule_ep is not None):
-        ## adapt schedule
-        schedule_ep = int(np.floor(args.lr_schedule_ep * (epochs / args.num_rounds)))
-
-        scheduler = optim.lr_scheduler.StepLR(optimizer, schedule_ep, gamma=args.lr_change_rate, last_epoch=-1,
-                                              verbose=False)
-    else:
-        scheduler = None
-
-    trainEvalLoopVanilla(vanillaModel, loss, optimizer, scheduler, trainloader, testloader, epochs, device,
-                         args.report_rounds)
-
-

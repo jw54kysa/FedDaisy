@@ -17,7 +17,7 @@ export PYTHONNOUSERSITE=1
 numclients=150
 batch_size=64
 numdat=64
-numrounds=10000
+numrounds=5000
 #schedrounds=2500
 
 seed=1
@@ -39,7 +39,7 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --num-clients $numclients \
     --num-rounds $numrounds \
     --num-samples-per-client $numdat \
-    --report-rounds 250 \
+    --report-rounds 25 \
     --daisy-rounds $daisy \
     --iid-data "$iid" \
     --min-samples $min \
