@@ -27,9 +27,7 @@ srun singularity exec --nv FEDDC.sif \
 python3.9 -u feddc_CIFAR10_pytorch.py \
     --optimizer SGD \
     --train-batch-size $batch_size \
-    --lr 0.1 \
-    --lr-schedule-ep ${schedrounds} \
-    --lr-change-rate 0.5 \
+    --lr 0.01 \
     --num-clients $numclients \
     --num-rounds $numrounds \
     --num-samples-per-client $numdat \
