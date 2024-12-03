@@ -25,7 +25,7 @@ seed=1
 daisy=1
 avg=10
 
-iid='randsize'
+#iid='randsize'
 #min=8
 #max=64
 #per='rand' #'prob'
@@ -43,4 +43,4 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --daisy-rounds $daisy \
     --aggregate-rounds $avg \
     --seed $seed \
-    | tee CompExp_Cifar10_iid${iid}_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_r${numrounds}_s${seed}.log
+    | tee CompExp_Cifar10_iid_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_1_r${numrounds}_s${seed}.log
