@@ -17,7 +17,7 @@ export PYTHONNOUSERSITE=1
 numclients=150
 batch_size=64
 numdat=64
-numrounds=5000
+numrounds=1000
 #schedrounds=2500
 
 seed=1
@@ -25,10 +25,10 @@ seed=1
 daisy=1
 avg=10
 
-#iid='randsize'
-#min=8
-#max=64
-#per='rand' #'prob'
+iid='randsize'
+min=8
+max=64
+per='rand' #'prob'
 #    --with-amp \
 
 srun singularity exec --nv FEDDC.sif \
