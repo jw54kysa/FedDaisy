@@ -29,8 +29,8 @@ def createLossAccPlot(exp_path):
     fig, ax1 = plt.subplots(figsize=(8, 5))
 
     # loss
-    ax1.plot(testLossAvg, marker='o', linestyle='-', color='g', label='Test Loss')
-    ax1.plot(trainLossAvg, marker='o', linestyle='-', color='b', label='Train Loss')
+    ax1.plot(testLossAvg, linestyle='-', color='b', label='Test Loss')
+    ax1.plot(trainLossAvg, linestyle='--', color='b', label='Train Loss')
     ax1.set_title("Experiment Accuracy & Losses", fontsize=10)
     ax1.set_xlabel("Report Round", fontsize=10)
     ax1.set_ylabel("Loss", fontsize=10, color='k')
@@ -39,8 +39,8 @@ def createLossAccPlot(exp_path):
 
     # accuracy
     ax2 = ax1.twinx()
-    ax2.plot(testAccAvg, marker='s', linestyle='--', color='g', label='Test Accuracy')
-    ax2.plot(trainAccAvg, marker='s', linestyle='--', color='b', label='Train Accuracy')
+    ax2.plot(testAccAvg, linestyle='-', color='g', label='Test Accuracy')
+    ax2.plot(trainAccAvg, linestyle='--', color='g', label='Train Accuracy')
     ax2.set_ylabel("Accuracy", fontsize=10, color='g')
     ax2.tick_params(axis='y', labelcolor='g')
 
