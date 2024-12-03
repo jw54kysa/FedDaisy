@@ -103,7 +103,7 @@ lossFunction = "CrossEntropyLoss"
 # here it would of course be smarter to have one GPU per client...
 device = torch.device("cuda")  # torch.device("cuda:0" if torch.cuda.is_available() else None)
 
-for perm in ['rand', 'prob', 'prob_amp']:
+for perm in ['rand', 'prob']:
 
     if perm == 'rand':
         args.permutation = perm
