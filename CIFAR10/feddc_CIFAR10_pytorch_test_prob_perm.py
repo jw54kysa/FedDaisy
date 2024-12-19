@@ -103,7 +103,22 @@ lossFunction = "CrossEntropyLoss"
 # here it would of course be smarter to have one GPU per client...
 device = torch.device("cuda")  # torch.device("cuda:0" if torch.cuda.is_available() else None)
 
+# get the data
+rng = np.random.RandomState(randomState)
+X_train, y_train, X_test, y_test = getCIFAR10(device)
+n_train = y_train.shape[0]
+if (args.restrict_classes is None):
+    if args.iid_data == 'randsize':
+        g_client_idxs = splitIntoLocalDataRandLen(n_train, args.num_clients, args.min_samples, args.max_samples, rng)
+    else:
+        g_client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
+else:
+    g_client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng,
+                                               args.restrict_classes)
+
 for perm in ['rand', 'prob']:
+
+    rng = np.random.RandomState(randomState)
 
     if perm == 'rand':
         args.permutation = perm
@@ -127,7 +142,6 @@ for perm in ['rand', 'prob']:
         clients.append(client)
 
     # get a fixed random number generator
-    rng = np.random.RandomState(randomState)
 
     # set up a folder for logging
     exp_path = name + "_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
@@ -153,17 +167,7 @@ permutation = {args.permutation}
 with-amp = {args.with_amp}    
     """
 
-    # get the data
-    X_train, y_train, X_test, y_test = getCIFAR10(device)
-    n_train = y_train.shape[0]
-    if (args.restrict_classes is None):
-        if args.iid_data == 'randsize':
-            client_idxs = splitIntoLocalDataRandLen(n_train, args.num_clients, args.min_samples, args.max_samples, rng)
-        else:
-            client_idxs = splitIntoLocalData(n_train, args.num_clients, args.num_samples_per_client, rng)
-    else:
-        client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng,
-                                                   args.restrict_classes)
+    client_idxs = g_client_idxs
 
     total_count = sum(len(sublist) for sublist in client_idxs)
     print(f"Total number of samples: {total_count}")
