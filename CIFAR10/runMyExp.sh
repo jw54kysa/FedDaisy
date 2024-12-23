@@ -35,7 +35,7 @@ srun singularity exec --nv FEDDC.sif \
 python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --optimizer SGD \
     --train-batch-size $batch_size \
-    --lr 0.01 \
+    --lr 0.1 \
     --num-clients $numclients \
     --num-rounds $numrounds \
     --num-samples-per-client $numdat \

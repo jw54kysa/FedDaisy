@@ -116,7 +116,7 @@ else:
     g_client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng,
                                                args.restrict_classes)
 
-for perm in ['rand', 'prob']:
+for perm in ['rand', 'prob', 'prob_amp']:
 
     rng = np.random.RandomState(randomState)
 
