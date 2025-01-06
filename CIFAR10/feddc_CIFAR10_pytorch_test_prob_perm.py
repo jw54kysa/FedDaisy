@@ -147,6 +147,7 @@ for perm in ['rand', 'prob', 'prob_amp']:
 
     # set up a folder for logging
     exp_path = name
+    os.mkdir(exp_path)
     exp_path += "/" + perm
     os.mkdir(exp_path)
 
