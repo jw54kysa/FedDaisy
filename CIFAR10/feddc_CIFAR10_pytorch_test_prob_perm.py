@@ -93,8 +93,9 @@ np.random.seed(args.seed)
 
 iid_data_info = ""
 if args.iid_data == 'randsize':
-    iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}"
+    iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}_"
 name = f"FedDC_cifar10_{iid_data_info}nc{args.num_clients}cl_n{args.num_samples_per_client}_b{args.train_batch_size}_l0_0_1_d{args.daisy_rounds}_a{args.aggregate_rounds}_r{args.num_rounds}_s{args.seed}"
+name += "_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
 
 aggregator = Average()
 mode = 'gpu'
@@ -145,8 +146,8 @@ for perm in ['rand', 'prob', 'prob_amp']:
     # get a fixed random number generator
 
     # set up a folder for logging
-    exp_path = name + "_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
-    exp_path += perm
+    exp_path = name
+    exp_path += "/" + perm
     os.mkdir(exp_path)
 
     # log basic experiment properties

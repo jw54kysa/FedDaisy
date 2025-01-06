@@ -28,7 +28,8 @@ avg=10
 iid='randsize'
 min=8
 max=64
-per='rand' #'prob'
+# script compares rand prob and prop_amp
+# per='rand' #'prob'
 #    --with-amp \
 
 srun singularity exec --nv FEDDC.sif \
@@ -42,5 +43,8 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --report-rounds 25 \
     --daisy-rounds $daisy \
     --aggregate-rounds $avg \
+    --iid-data $iid \
+    --min-samples $min \
+    --max-samples $max \
     --seed $seed \
     | tee CompExp_Cifar10_iid_nc${numclients}cl_n${numdat}_b${batch_size}_d${daisy}_a${avg}_lr0_01_r${numrounds}_s${seed}.log
