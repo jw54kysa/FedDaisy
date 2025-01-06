@@ -13,7 +13,7 @@ from resnet import Cifar10ResNet50, Cifar10ResNet18
 from client_pytorch import PyTorchNN, evaluateModel
 from vanilla_training import trainEvalLoopVanilla
 
-from createPlot import createLossAccPlot
+from createPlot import createLossAccPlot, plot_rss
 
 # set the parameters
 
@@ -116,6 +116,7 @@ else:
     g_client_idxs = splitIntoLocalDataLimClasses(X_train, y_train, args.num_clients, args.num_samples_per_client, rng,
                                                args.restrict_classes)
 
+# EXP
 for perm in ['rand', 'prob', 'prob_amp']:
 
     rng = np.random.RandomState(randomState)
@@ -189,6 +190,8 @@ total_sample_count = {total_count}
     trainACCs = [[] for _ in range(args.num_clients)]
     testACCs = [[] for _ in range(args.num_clients)]
 
+    client_visits = [0 for _ in range(args.num_clients)]
+
     ## TODO: Move everything (including data) to GPU and only work with indices here.
     for t in range(args.num_rounds):
         for i in range(args.num_clients):
@@ -203,6 +206,11 @@ total_sample_count = {total_count}
 
             if args.permutation == 'prob':
                 localDataIndex = localDataIndexRandLenPermutation(localDataIndex, client_idxs, args.with_amp)
+
+                # count visits of client
+                for client_num in localDataIndex:
+                    client_visits[client_num] += 1
+
             else:
                 rng.shuffle(localDataIndex)
 
@@ -229,6 +237,9 @@ total_sample_count = {total_count}
             print("average train loss = ", np.mean(trainLosses[-1]), " average test loss = ", np.mean(testLosses[-1]))
             print("average train accuracy = ", np.mean(trainACCs[-1]), " average test accuracy = ",
                   np.mean(testACCs[-1]))
+
+    # plot RSS
+    plot_rss(g_client_idxs, client_visits, exp_path + "/rss-v.png")
 
     pickle.dump(trainLosses, open(exp_path + "/trainLosses.pck", 'wb'))
     pickle.dump(testLosses, open(exp_path + "/testLosses.pck", 'wb'))

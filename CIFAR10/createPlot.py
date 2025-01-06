@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
+import numpy as np
 import pickle
 
 def createLossAccPlot(exp_path):
@@ -48,3 +50,42 @@ def createLossAccPlot(exp_path):
     plt.tight_layout()
     # plt.show()
     plt.savefig(exp_path+"/lossAcc.png")
+
+# Plot random size client samples
+def plot_rss(client_idxs, visits, path):
+    counts = []
+    for l in client_idxs:
+        counts.append(len(l))
+    # counts.sort()
+
+    combined = sorted(zip(counts, visits), key=lambda x: x[0])
+
+    # Separate the sorted lists
+    sorted_counts, sorted_visits = zip(*combined)
+
+    # Convert back to lists
+    counts = list(sorted_counts)
+    visits = list(sorted_visits)
+
+    fig, ax1 = plt.subplots(figsize=(16, 8))
+
+    # Bar plot for sample size
+    ax1.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax1.bar(np.arange(len(counts)), counts, label='Sample Size', alpha=0.7, color='blue')
+    ax1.set_title("Client Sample Size")
+    ax1.set_xlabel("Client")
+    ax1.set_ylabel("Sample Size", color='blue')
+    ax1.tick_params(axis='y', labelcolor='blue')
+
+    # Create second y-axis for visits
+    ax2 = ax1.twinx()
+    ax2.plot(np.arange(len(visits)), visits, label='Visits', color='red', marker='o')
+    ax2.set_ylabel("Visits", color='red')
+    ax2.tick_params(axis='y', labelcolor='red')
+
+    # Adding legends for both plots
+    fig.legend(loc="upper right", bbox_to_anchor=(1, 1), bbox_transform=ax1.transAxes)
+
+    # Save and display the plot
+    plt.savefig(path)
+    plt.show()
