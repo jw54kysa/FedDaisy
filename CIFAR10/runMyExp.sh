@@ -14,14 +14,13 @@
 # use singularity python
 export PYTHONNOUSERSITE=1
 
-numclients=150
+numclients=50 # 150
 batch_size=64
 numdat=64
-numrounds=5000
+numrounds=500 # 5000
 #schedrounds=2500
 
 seed=1
-
 daisy=1
 avg=10
 
@@ -40,7 +39,7 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --num-clients $numclients \
     --num-rounds $numrounds \
     --num-samples-per-client $numdat \
-    --report-rounds 25 \
+    --report-rounds 5 \
     --daisy-rounds $daisy \
     --aggregate-rounds $avg \
     --iid-data $iid \

@@ -96,6 +96,7 @@ if args.iid_data == 'randsize':
     iid_data_info = f"iid{args.iid_data}{args.min_samples}_{args.max_samples}_"
 name = f"FedDC_cifar10_{iid_data_info}nc{args.num_clients}cl_n{args.num_samples_per_client}_b{args.train_batch_size}_l0_0_1_d{args.daisy_rounds}_a{args.aggregate_rounds}_r{args.num_rounds}_s{args.seed}"
 name += "_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
+os.mkdir(name)
 
 aggregator = Average()
 mode = 'gpu'
@@ -146,9 +147,7 @@ for perm in ['rand', 'prob', 'prob_amp']:
     # get a fixed random number generator
 
     # set up a folder for logging
-    exp_path = name
-    os.mkdir(exp_path)
-    exp_path += "/" + perm
+    exp_path = name + "/" + perm
     os.mkdir(exp_path)
 
     # log basic experiment properties
@@ -241,7 +240,7 @@ total_sample_count = {total_count}
                   np.mean(testACCs[-1]))
 
     # plot RSS
-    plot_rss(g_client_idxs, client_visits, exp_path + "/rss-v.png")
+    plot_rss(client_idxs, client_visits, exp_path + "/rss-v.png")
 
     pickle.dump(trainLosses, open(exp_path + "/trainLosses.pck", 'wb'))
     pickle.dump(testLosses, open(exp_path + "/testLosses.pck", 'wb'))
