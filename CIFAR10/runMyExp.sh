@@ -14,10 +14,10 @@
 # use singularity python
 export PYTHONNOUSERSITE=1
 
-numclients=50 # 150
+numclients=150 # 150
 batch_size=64
 numdat=64
-numrounds=500 # 5000
+numrounds=5000 # 5000
 #schedrounds=2500
 
 seed=1
@@ -25,8 +25,8 @@ daisy=1
 avg=10
 
 iid='randsize'
-min=8
-max=64
+min=64
+max=128
 # script compares rand prob and prop_amp
 # per='rand' #'prob'
 #    --with-amp \
@@ -39,7 +39,7 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --num-clients $numclients \
     --num-rounds $numrounds \
     --num-samples-per-client $numdat \
-    --report-rounds 5 \
+    --report-rounds 20 \
     --daisy-rounds $daisy \
     --aggregate-rounds $avg \
     --iid-data $iid \

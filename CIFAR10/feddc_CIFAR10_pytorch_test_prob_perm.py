@@ -207,13 +207,12 @@ total_sample_count = {total_count}
 
             if args.permutation == 'prob':
                 localDataIndex = localDataIndexRandLenPermutation(localDataIndex, client_idxs, args.with_amp)
-
-                # count visits of client
-                for client_num in localDataIndex:
-                    client_visits[client_num] += 1
-
             else:
                 rng.shuffle(localDataIndex)
+
+            # count visits of client
+            for client_num in localDataIndex:
+                client_visits[client_num] += 1
 
         if t % args.aggregate_rounds == args.aggregate_rounds - 1:  # aggregation
             params = []
