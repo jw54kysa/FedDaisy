@@ -21,8 +21,8 @@ numrounds=5000 # 5000
 #schedrounds=2500
 
 seed=1
-daisy=1
-avg=25
+daisy=10
+avg=100
 
 iid='randsize'
 min=64
