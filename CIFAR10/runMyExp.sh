@@ -22,7 +22,7 @@ numrounds=5000 # 5000
 
 seed=1
 daisy=1
-avg=10
+avg=25
 
 iid='randsize'
 min=64
@@ -39,7 +39,7 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --num-clients $numclients \
     --num-rounds $numrounds \
     --num-samples-per-client $numdat \
-    --report-rounds 20 \
+    --report-rounds 25 \
     --daisy-rounds $daisy \
     --aggregate-rounds $avg \
     --iid-data $iid \
