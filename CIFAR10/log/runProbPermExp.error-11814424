@@ -1,0 +1,2 @@
+/home/sc.uni-leipzig.de/jw54kysa/FedDaisy/CIFAR10/dataset_cifar10.py:30: UserWarning: The torch.cuda.*DtypeTensor constructors are no longer recommended. It's best to use methods such as torch.tensor(data, dtype=*, device='cuda') to create tensors. (Triggered internally at ../torch/csrc/tensor/python_tensor.cpp:78.)
+  X_train = torch.cuda.FloatTensor(X_train).permute(0,3,1,2)
