@@ -17,15 +17,15 @@ export PYTHONNOUSERSITE=1
 numclients=150 # 150
 batch_size=64
 numdat=64
-numrounds=5000 # 5000
+numrounds=1000 # 5000
 #schedrounds=2500
 
 seed=1
-daisy=10
-avg=100
+daisy=1
+avg=10
 
 iid='randsize'
-min=64
+min=8
 max=128
 # script compares rand prob and prop_amp
 # per='rand' #'prob'
@@ -39,7 +39,7 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --num-clients $numclients \
     --num-rounds $numrounds \
     --num-samples-per-client $numdat \
-    --report-rounds 25 \
+    --report-rounds 20 \
     --daisy-rounds $daisy \
     --aggregate-rounds $avg \
     --iid-data $iid \
