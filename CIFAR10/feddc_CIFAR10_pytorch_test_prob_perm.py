@@ -198,7 +198,7 @@ total_sample_count = {total_count}
         for i in range(args.num_clients):
             if args.iid_data == 'randsize':
                 # get random length data samples
-                sample = getSample(client_idxs[localDataIndex[i]], len(client_idxs[localDataIndex[i]]) / 2,
+                sample = getSample(client_idxs[localDataIndex[i]], round(len(client_idxs[localDataIndex[i]]) / 2),
                                    rng)  # args.train_batch_size
             else:
                 sample = getSample(client_idxs[localDataIndex[i]], args.train_batch_size, rng)
