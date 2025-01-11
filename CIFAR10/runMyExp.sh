@@ -17,7 +17,7 @@ export PYTHONNOUSERSITE=1
 numclients=150 # 150
 batch_size=64
 numdat=64
-numrounds=5000 # 5000
+numrounds=1000 # 5000
 #schedrounds=2500
 
 seed=1
