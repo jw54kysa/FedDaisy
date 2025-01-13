@@ -42,6 +42,7 @@ python3.9 -u feddc_CIFAR10_pytorch_test_prob_perm.py \
     --report-rounds 20 \
     --daisy-rounds $daisy \
     --aggregate-rounds $avg \
+    --restrict-classes 8 \
     --iid-data $iid \
     --min-samples $min \
     --max-samples $max \
